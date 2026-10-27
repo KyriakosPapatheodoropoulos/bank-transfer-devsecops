@@ -1,23 +1,24 @@
 package main
 
 import (
-     "fmt"
-     "log"
-     "net/http"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/KyriakosPapatheodoropoulos/bank-transfer-devsecops/app/internal/handler"
 )
 
 func main() {
-    http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request){
-        fmt.Fprintln(w, "bank-transfer-api is running")
-    })
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "bank-transfer-api is running")
+	})
 
-    log.Println("server starting on :8080")
+	http.HandleFunc("/api/v1/transfer", handler.TransferHandler)
 
-    if err := http.ListenAndServe(":8080",nil); err!=nil {
-        log.Fatal(err)
-    }
+	log.Println("server starting on :8080")
 
-
-
-
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
+	}
 }
+
