@@ -31,7 +31,7 @@ func main() {
 		fmt.Fprintln(w, "bank-transfer-api is running")
 	})
 
-	http.HandleFunc("/api/v1/transfer", handler.TransferHandler)
+	http.HandleFunc("/api/v1/transfer", handler.TransferHandler(dbPool))
 
 	log.Println("server starting on :8080")
 
