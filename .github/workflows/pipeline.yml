@@ -14,7 +14,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Set up Go
         uses: actions/setup-go@v7
@@ -26,6 +28,11 @@ jobs:
         working-directory: app
         run: go test ./...
 
+      - name: Scan repository for secrets
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build Docker image
         uses: docker/build-push-action@v7
         with:
@@ -33,3 +40,4 @@ jobs:
           file: ./app/Dockerfile
           push: false
           tags: bank-transfer-api:ci
+
