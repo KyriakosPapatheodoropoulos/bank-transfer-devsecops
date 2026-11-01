@@ -6,9 +6,9 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build \
     -trimpath \
-    -1dflags="-s -w" \
+    -ldflags="-s -w" \
     -o /out/bank-transfer-api \
-    ./cmd/sever
+    ./cmd/server
 
 
 FROM gcr.io/distroless/static-debian12:nonroot
