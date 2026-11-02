@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
@@ -52,3 +56,19 @@ jobs:
           ignore-unfixed: true
           exit-code: "1"
 
+      - name: Login to GitHub Container Registry
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Docker image to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag bank-transfer-api:ci ghcr.io/kyriakospapatheodoropoulos/bank-transfer-devsecops:${{ github.sha }}
+          docker tag bank-transfer-api:ci ghcr.io/kyriakospapatheodoropoulos/bank-transfer-devsecops:latest
+
+          docker push ghcr.io/kyriakospapatheodoropoulos/bank-transfer-devsecops:${{ github.sha }}
+          docker push ghcr.io/kyriakospapatheodoropoulos/bank-transfer-devsecops:latest
