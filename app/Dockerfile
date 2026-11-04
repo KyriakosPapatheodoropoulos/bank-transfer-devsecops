@@ -15,7 +15,7 @@ FROM gcr.io/distroless/static-debian12:nonroot
 
 WORKDIR /app
 
-COPY --from=builder /out/bank-transfer-api /app/bank-trnsfer-api
+COPY --from=builder /out/bank-transfer-api /app/bank-transfer-api
 
 EXPOSE 8080
  
