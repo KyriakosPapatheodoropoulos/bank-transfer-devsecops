@@ -19,6 +19,6 @@ COPY --from=builder /out/bank-transfer-api /app/bank-trnsfer-api
 
 EXPOSE 8080
  
-USER nonroot:nonroot
+USER 65532:65532
 
 ENTRYPOINT ["/app/bank-transfer-api"]
